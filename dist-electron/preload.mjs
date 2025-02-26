@@ -19,7 +19,10 @@ electron.contextBridge.exposeInMainWorld("ipcRenderer", {
   },
   // openFolder: () => ipcRenderer.send("openfolder"),
   getData: () => electron.ipcRenderer.invoke("getData"),
-  openPath: (path) => electron.ipcRenderer.send("openPath", path)
+  openPath: (path) => electron.ipcRenderer.send("openPath", path),
+  getAutom: (callback) => {
+    electron.ipcRenderer.on("getAutom", (_, message) => callback(message));
+  }
   // You can expose other APTs you need here.
   // ...
 });

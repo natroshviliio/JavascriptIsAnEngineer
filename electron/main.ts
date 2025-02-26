@@ -5,19 +5,34 @@ import path from "node:path";
 import { exec, execSync } from "node:child_process";
 import fs from "fs";
 
+import express from "express";
+import { WebSocketServer } from "ws";
+import http from "http";
+
 const require = createRequire(import.meta.url);
 void require;
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// The built directory structure
-//
-// ├─┬─┬ dist
-// │ │ └── index.html
-// │ │
-// │ ├─┬ dist-electron
-// │ │ ├── main.js
-// │ │ └── preload.mjs
-// │
+const expressApp = express();
+
+expressApp.use(express.urlencoded({ extended: true }));
+expressApp.use(express.json());
+
+const server = http.createServer(expressApp);
+const ws = new WebSocketServer({ server: server });
+
+ws.on("connection", (socket) => {
+    console.log("Client Connected");
+
+    win?.webContents.send("getAutom", "Hello World?");
+
+    socket.send("Hello There?");
+});
+
+server.listen(5000, () => {
+    console.log("Server is running on port:", 5000);
+});
+
 process.env.APP_ROOT = path.join(__dirname, "..");
 
 // 🚧 Use ['ENV_NAME'] avoid vite:define plugin - Vite@2.x

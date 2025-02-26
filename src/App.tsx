@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
 
 function App() {
     const [data, setData] = useState<{ name: string; type: string }[]>([]);
+    const [someMsg, setSomeMsg] = useState<string>("");
 
     const getData = () => {
         window.ipcRenderer.getData().then((data) => {
@@ -15,6 +16,12 @@ function App() {
         window.ipcRenderer.openPath(path);
     };
 
+    useEffect(() => {
+        window.ipcRenderer.getAutom((msg: string) => {
+            setSomeMsg(msg);
+        });
+    }, []);
+
     // const openFolder = () => {
     //     window.ipcRenderer.openFolder();
     // };
@@ -26,6 +33,8 @@ function App() {
                 onClick={getData}>
                 Check Directory
             </button>
+
+            <div>{someMsg}</div>
 
             <div className="grid grid-cols-4 gap-x-2 gap-y-2 mt-4">
                 {data.map((d) => {

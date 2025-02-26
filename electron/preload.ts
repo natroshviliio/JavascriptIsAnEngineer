@@ -24,6 +24,10 @@ contextBridge.exposeInMainWorld("ipcRenderer", {
     getData: () => ipcRenderer.invoke("getData"),
     openPath: (path: string) => ipcRenderer.send("openPath", path),
 
+    getAutom: (callback: (message: string) => void) => {
+        ipcRenderer.on("getAutom", (_, message) => callback(message));
+    },
+
     // You can expose other APTs you need here.
     // ...
 });

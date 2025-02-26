@@ -32,5 +32,7 @@ interface Window {
             }[]
         >;
         openPath: (path: string) => void;
+
+        getAutom: (msg) => void;
     };
 }
